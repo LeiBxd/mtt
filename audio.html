@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Аудиовизуализация</title>
+
+  <style>
+body {
+    background: #33CCCC; 
+    animation: color 9s infinite linear;
+    text-align: center;
+    padding: 2em;
+  }
+@keyframes color {
+    0%   { background: #33CCCC; }
+    20%  { background: #cc33cc; }
+    40%  { background: #B8CC33; }
+    60%  { background: #22ad5c; }
+    80%  { background: #702acc; }
+    100% { background: #33CCCC; }
+}
+
+
+.img{
+  margin-top: 200px;
+}
+    .audiovisualization {
+      margin-top: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .audiovisualization-line {
+      width: 10px;
+      margin: 2px;
+      border-radius: 30px;
+      background-image: linear-gradient(180deg, red, pink);
+
+     
+    }
+    .knopki{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      
+}
+.odin{
+  margin-right: 20px;
+  margin-top: 20px;
+      display: inline-block;	
+	box-sizing: border-box;
+	padding: 0 25px;
+	justify-content: center;
+	outline: none;
+	border: 1px solid #fff;
+	border-radius: 50px;
+	height: 46px;
+	line-height: 46px;
+	font-size: 20px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #444;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgb(65 132 144 / 10%), 0 1px 3px rgb(0 0 0 / 8%);
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;  
+	vertical-align: top;
+	transition: box-shadow 0.2s;
+}
+.tri{
+  margin-left: 20px;
+  margin-top: 20px;
+      display: inline-block;	
+	box-sizing: border-box;
+	padding: 0 25px;
+	justify-content: center;
+	outline: none;
+	border: 1px solid #fff;
+	border-radius: 50px;
+	height: 46px;
+	line-height: 46px;
+	font-size: 20px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #444;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgb(65 132 144 / 10%), 0 1px 3px rgb(0 0 0 / 8%);
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;  
+	vertical-align: top;
+	transition: box-shadow 0.2s;
+}
+.dva{
+  justify-content: center;
+  margin-top: 20px;
+      display: inline-block;	
+	box-sizing: border-box;
+	padding: 0 25px;
+	justify-content: center;
+	outline: none;
+	border: 1px solid #fff;
+	border-radius: 50px;
+	height: 66px;
+	line-height: 46px;
+	font-size: 25px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #444;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgb(65 132 144 / 10%), 0 1px 3px rgb(0 0 0 / 8%);
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;  
+	vertical-align: top;
+	transition: box-shadow 0.2s;
+}
+.knopki:focus-visible {
+	border: 1px solid #4c51f9;
+	outline: none;
+}
+.knopki:hover {
+	transition: all 0.2s;
+	
+}
+.knopki:active {
+	
+}
+.knopki:disabled {
+	background-color: #eee;
+	border-color: #eee;
+	
+	cursor: not-allowed;
+}
+.trackk{
+  font-family: fantasy;
+  font-size: 45px;
+  font-weight: bold;
+  margin: 20px 20px;
+  -webkit-text-stroke:1px black;
+  -webkit-text-fill-color:white;
+  
+}
+
+    
+  </style>
+
+</head>
+<body>
+
+  <div class="img">
+    <img id="myImage" src="image1.jpg" width="400px" height="400px">
+  </div>
+  <div class="trackk">
+    
+  </div>
+  <div>
+    <audio id="myAudio" controls>
+      <source src="audio1.mp3" type="audio/mpeg">
+  
+    </audio>
+  </div>
+  <div class="knopki">
+  <button class="odin" onclick="prevTrack()">Prev</button>
+  <button class = "dva"onclick="playPause()">Play/Pause</button>
+  <button class="tri" onclick="nextTrack()">Next</button>
+</div>
+ 
+  <div class="audiovisualization" id="audiovisualization">
+    
+  </div>
+  
+  <script>
+
+    var context, analyser, src, array, audiovisualizationLine;
+    
+    var audiovisualization = document.getElementById("audiovisualization");
+    var audio = document.getElementById("myAudio");
+    var image = document.getElementById("myImage");
+    var tracknames = document.querySelector('.trackk')
+    var tracks = ["MURDER PLOT - Kordhell", "Восточные сказки - Блестящие", "Втюрилась - Дора"];
+    
+    
+    let songindex = 0;
+
+    function loadsong(song){
+      tracknames.innerHTML=song;
+      audio.src=`${song}.mp3`
+      image.src=`image${songindex+1}.jpg`
+    }
+    loadsong(tracks[songindex])
+
+    function playPause() {
+
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  
+    function nextTrack() {
+      songindex++;
+      if (songindex >= tracks.length) {
+        songindex = 0;
+      }
+      //audio.src = tracks[currentTrack];
+      //image.src =images[currentTrack];
+      //racknames.innerHTML= ``
+      loadsong(tracks[songindex])
+      audio.play();
+    }
+  
+    function prevTrack() {
+      songindex--;
+      if (songindex < 0) {
+        songindex = tracks.length - 1;
+      }
+      // audio.src = tracks[currentTrack];
+      // image.src = images[currentTrack];
+      // tracknames.src = images[currentTrack];
+      loadsong(tracks[songindex])
+      audio.play();
+    }
+
+    function startVisualization() {
+      context = new AudioContext();
+      analyser = context.createAnalyser();
+      src = context.createMediaElementSource(audio);
+      src.connect(analyser);
+      analyser.connect(context.destination);
+    }
+
+    function loop() {
+
+      if(!audio.paused) {
+        window.requestAnimationFrame(loop);
+      }
+
+      array = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(array);
+
+      for(var i = 0 ; i < 32 ; i++){
+        height = array[i+32];
+        audiovisualizationLine[i].style.minHeight = height+'px';
+        audiovisualizationLine[i].style.opacity = 0.005*height;
+      }
+
+    }
+
+    audio.addEventListener('playing', function() {
+
+      if(!context) {
+
+        for(var i = 0; i < 32; i++) {
+          var div = document.createElement('div');
+          div.classList.add('audiovisualization-line');
+          audiovisualization.append(div);
+        }
+
+        audiovisualizationLine = document.getElementsByClassName('audiovisualization-line');
+
+        startVisualization();
+
+      }
+
+      loop();
+
+    });
+    
+  </script>
+  
+</body>
+</html>
